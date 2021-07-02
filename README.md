@@ -2,7 +2,7 @@
 
 Author: **@hugsy**
 
-Headless Binary Ninja!
+Headless Binary Ninja (sort of!)
 
 
 
