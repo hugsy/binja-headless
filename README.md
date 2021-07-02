@@ -1,4 +1,4 @@
-# Binja-RPyc
+# binja-headless
 
 Author: **@hugsy**
 
