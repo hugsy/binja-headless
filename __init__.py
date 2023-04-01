@@ -19,13 +19,13 @@ PluginCommand.register(
     "RPyC\\Start service",
     "Start the RPyC server",
     rpyc_start,
-    is_valid = lambda view: not is_service_started(view)
+    is_valid=lambda view: not is_service_started(view)
 )
 
 
 PluginCommand.register(
     "RPyC\\Stop service",
-    "Start the RPyC server",
+    "Stop the RPyC server",
     rpyc_stop,
-    is_valid = lambda view: is_service_started(view)
+    is_valid=lambda view: is_service_started(view)
 )
