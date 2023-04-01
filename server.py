@@ -49,11 +49,9 @@ class BinjaRpycService(rpyc.Service):
         return eval(cmd)
 
 
-
 def is_service_started(view):
     global __service_thread
     return __service_thread is not None
-
 
 
 def start_service(host, port, bv):
@@ -71,7 +69,7 @@ def start_service(host, port, bv):
                 service(),
                 hostname=host,
                 port=p,
-                protocol_config={'allow_public_attrs': True,}
+                protocol_config={'allow_public_attrs': True, }
             )
             break
         except OSError as e:
@@ -90,7 +88,8 @@ def start_service(host, port, bv):
 def rpyc_start(bv):
     global __service_thread
     dbg("Starting background service...")
-    __service_thread = threading.Thread(target=start_service, args=(HOST, PORT, bv))
+    __service_thread = threading.Thread(
+        target=start_service, args=(HOST, PORT, bv))
     __service_thread.daemon = True
     __service_thread.start()
     binaryninja.show_message_box(
@@ -100,7 +99,6 @@ def rpyc_start(bv):
         binaryninja.MessageBoxIcon.InformationIcon
     )
     return
-
 
 
 def shutdown_service():

@@ -28,29 +28,30 @@ def ishex(s):
 def info(x):
     log_info("[+] {:s}".format(x))
 
+
 def err(x):
     log_error("[-] {:s}".format(x))
+
 
 def dbg(x):
     if DEBUG:
         log_debug("[*] {:s}".format(x))
 
 
-
 class RunInBackground(BackgroundTaskThread):
     def __init__(self, target, cancel_cb=None, *args, **kwargs):
-            BackgroundTaskThread.__init__(self, '', cancel_cb is not None)
-            self.target = target
-            self.args = args
-            self.kwargs = kwargs
-            self.cancel_cb = cancel_cb
-            return
+        BackgroundTaskThread.__init__(self, '', cancel_cb is not None)
+        self.target = target
+        self.args = args
+        self.kwargs = kwargs
+        self.cancel_cb = cancel_cb
+        return
 
     def run(self):
         self.target(self, *self.args, **self.kwargs)
         return
 
     def cancel(self):
-        self.cancel_cb()
+        if self.cancel_cb:
+            self.cancel_cb()
         return
-
