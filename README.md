@@ -81,6 +81,10 @@ CreateWaitableTimerW -> 0x180001090
 [...]
 ```
 
+## Demo
+
+[![binja-headless](https://i.imgur.com/1dUevj7.png)](https://youtu.be/wvQyXbYV92c)
+
 
 ## Minimum Version
 

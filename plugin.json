@@ -2,8 +2,6 @@
     "pluginmetadataversion": 2,
     "name": "Binja-Headless",
     "type": [
-        "ui",
-        "binaryview",
         "helper"
     ],
     "api": [
