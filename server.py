@@ -4,6 +4,7 @@
 """
 
 import threading
+import typing
 import rpyc
 import rpyc.utils.helpers
 import rpyc.utils.server
@@ -23,6 +24,9 @@ from .constants import (
     SERVICE_NAME,
 )
 
+if typing.TYPE_CHECKING:
+    import rpyc.core.protocol
+
 
 g_ServiceThread = None
 g_Server = None
@@ -36,11 +40,11 @@ class BinjaRpycService(rpyc.Service):
         self.bv = bv
         return
 
-    def on_connect(self, conn):
+    def on_connect(self, conn: rpyc.core.protocol.Connection):
         info("connect open: {}".format(conn,))
         return
 
-    def on_disconnect(self, conn):
+    def on_disconnect(self, conn: rpyc.core.protocol.Connection):
         info("connection closed: {}".format(conn,))
         return
 

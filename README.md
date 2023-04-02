@@ -8,10 +8,15 @@ Headless Binary Ninja (sort of!)
 
 ## Description
 
-Allows to use Binary Ninja headlessly and remotely by creating an RPyc service for it.
-It works just like [IDA-Header](https://github.com/hugsy/ida-headless) but for Binary Ninja.
+This plugin allows you to use Binary Ninja headlessly and remotely to script and control Binja remotely without the need of an entreprise license. This makes it convenient for creating scripts, or live reversing using Jupyter for instance. It works internally by simply creating an RPyc service within the Python environment, and expose it on a TCP socket. Note that this plugin is Binary Ninja specific: an equivalent for IDA was created in the repository [IDA-Headless](https://github.com/hugsy/ida-headless).
 
-Install the files in the Binary Ninja plugin directory, and start it.
+**Important note**: this plugin exposes entirely the targeted Python VM over a TCP socket, in cleartext without authentication. Therefore *anyone* able to connect to it will be able to execute command on the remote system; so this plugin should never be used on a host that receive untrusted connections.
+
+This plugin requires the installation of the [`rpyc`](https://rpyc.readthedocs.io/en/latest) package, but the service is only opened on demand. It was tested and works well under Windows and Linux but is expected to work the same on MacOS.
+
+## Installation
+
+Install the files in the Binary Ninja plugin directory, and start the service (Palette -> `Start RPyc Service`).
 
 From a remote Python terminal, you can now access binja!
 
@@ -19,7 +24,7 @@ From a remote Python terminal, you can now access binja!
 >>> import rpyc
 >>> c = rpyc.connect("192.168.57.2", 18812)
 >>> c.root.bv
-<BinaryView: '//ph0ny/Temp/ls', len 0x248e8>
+<BinaryView: '//DESKTOP-SD4TH5/Temp/ls', len 0x248e8>
 
 >>> dir(c.root.binaryninja)
 ['ActionType',

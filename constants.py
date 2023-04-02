@@ -1,5 +1,3 @@
-from typing import Tuple
-
 #
 # The service name
 #
@@ -8,7 +6,7 @@ SERVICE_NAME: str = "Binja-RPyC"
 #
 # Change to True to enable debug messages
 #
-DEBUG: bool = True
+DEBUG: bool = False
 
 #
 # The IPv4 host address to listen on
