@@ -33,17 +33,33 @@ From a remote Python terminal, you can now access binja!
 
 And then you can create some aliases to make as if you were using it locally:
 ```python
->>> bv = c.root.bv
->>> binaryninja = c.root.binaryninja
+>>> bv = c.root.bv ;  bn = c.root.binaryninja
+
 # and then go crazy
+>>> bn.core_version()
+'3.4.4189-dev Personal'
+
+>>> bv.file
+<FileMetadata: Y:/IDBs/windows/kernel32/10.0.18362.329/kernel32.bndb>
+
 >>> bv.arch
 <arch: x86_64>
->>> bv.file.original_filename
-'//ph0ny/Temp/ls'
->>> bv.get_functions_by_name("main")
-[<func: x86_64@0x4df0>]
-```
 
+>>> bv.file.original_filename
+'Y:/IDBs/windows/kernel32/10.0.18362.329/kernel32.dll'
+
+>>> bv.get_functions_by_name("CreateFileMappingW")
+[<func: x86_64@0x18001c250>]
+
+>>> for f in bv.functions:
+    print(f"{f.name} -> {f.start:#x}")
+RtlVirtualUnwindStub -> 0x180001010
+GetNumberFormatWStub -> 0x180001060
+GetTimeZoneInformationForYearStub -> 0x180001070
+IdnToAsciiStub -> 0x180001080
+CreateWaitableTimerW -> 0x180001090
+[...]
+```
 
 ## Minimum Version
 
