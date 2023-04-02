@@ -9,7 +9,7 @@ Headless Binary Ninja (sort of!)
 ## Description
 
 Allows to use Binary Ninja headlessly and remotely by creating an RPyc service for it.
-It works just like [IDA-RPyc](https://github.com/hugsy/stuff/blob/master/ida_scripts/ida_rpyc_server.py) but for Binja.
+It works just like [IDA-Header](https://github.com/hugsy/ida-headless) but for Binary Ninja.
 
 Install the files in the Binary Ninja plugin directory, and start it.
 
@@ -58,6 +58,14 @@ GetNumberFormatWStub -> 0x180001060
 GetTimeZoneInformationForYearStub -> 0x180001070
 IdnToAsciiStub -> 0x180001080
 CreateWaitableTimerW -> 0x180001090
+[...]
+
+>>> for block in bv.get_functions_by_name("GlobalUnlock")[0]:
+      for insn in block:
+        print(insn)
+(['mov', '     ', 'qword ', '[', 'rsp', '+', '0x8', ']', ', ', 'rbx'], 5)
+(['mov', '     ', 'qword ', '[', 'rsp', '+', '0x10', ']', ', ', 'rsi'], 5)
+(['push', '    ', 'rdi'], 1)
 [...]
 ```
 
