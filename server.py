@@ -5,6 +5,8 @@
 
 import threading
 import rpyc
+import rpyc.utils.helpers
+import rpyc.utils.server
 
 import binaryninja
 
@@ -12,16 +14,18 @@ from .helpers import (
     info,
     err,
     dbg,
+    warn,
 )
 
 from .constants import (
     HOST,
     PORT,
+    SERVICE_NAME,
 )
 
 
-__service_thread = None
-__server = None
+g_ServiceThread = None
+g_Server = None
 __bv = None
 
 
@@ -50,22 +54,22 @@ class BinjaRpycService(rpyc.Service):
 
 
 def is_service_started(view):
-    global __service_thread
-    return __service_thread is not None
+    global g_ServiceThread
+    return g_ServiceThread is not None
 
 
-def start_service(host, port, bv):
+def start_service(host: str, port: int, bv: binaryninja.BinaryView):
     """Starting the RPyC server"""
-    global __server, __bv
-    __server = None
+    global g_Server, __bv
+    g_Server = None
     __bv = bv
 
     for i in range(1):
-        p = port + i
+        p: int = port + i
         try:
             service = rpyc.utils.helpers.classpartial(BinjaRpycService, bv)
 
-            __server = rpyc.utils.server.ThreadedServer(
+            g_Server = rpyc.utils.server.ThreadedServer(
                 service(),
                 hostname=host,
                 port=p,
@@ -73,27 +77,27 @@ def start_service(host, port, bv):
             )
             break
         except OSError as e:
-            err("OSError: {}".format(e))
-            __server = None
+            err(f"OSError: {str(e)}")
+            g_Server = None
 
-    if not __server:
+    if not g_Server:
         err("failed to start server...")
         return
 
     info("server successfully started")
-    __server.start()
+    g_Server.start()
     return
 
 
 def rpyc_start(bv):
-    global __service_thread
+    global g_ServiceThread
     dbg("Starting background service...")
-    __service_thread = threading.Thread(
+    g_ServiceThread = threading.Thread(
         target=start_service, args=(HOST, PORT, bv))
-    __service_thread.daemon = True
-    __service_thread.start()
+    g_ServiceThread.daemon = True
+    g_ServiceThread.start()
     binaryninja.show_message_box(
-        "Binja-RPyC",
+        SERVICE_NAME,
         "Service successfully started, you can use any RPyC client to connect to this instance of Binary Ninja",
         binaryninja.MessageBoxButtonSet.OKButtonSet,
         binaryninja.MessageBoxIcon.InformationIcon
@@ -101,34 +105,48 @@ def rpyc_start(bv):
     return
 
 
-def shutdown_service():
+def shutdown_service() -> bool:
+    if not g_Server:
+        warn("Service not started")
+        return False
     try:
-        info("shutting down service")
-        __server.close()
+        dbg("Shutting down service")
+        g_Server.close()
     except Exception as e:
-        err("Exception: {}".format(e))
+        err(f"Exception: {str(e)}")
         return False
     return True
 
 
-def stop_service():
+def stop_service() -> bool:
     """ Stopping the service """
-    global __service_thread
-    dbg("Trying to stop service thread")
-    shutdown_service()
-    __service_thread.join()
-    __service_thread = None
-    info("Server stopped")
+    global g_ServiceThread
+    if not g_ServiceThread:
+        return False
+
+    dbg("Stopping service thread")
+    if shutdown_service():
+        g_ServiceThread.join()
+        g_ServiceThread = None
+        info("Service thread stopped")
     return True
 
 
-def rpyc_stop(bv):
+def rpyc_stop(bv: binaryninja.BinaryView):
     "Stopping background service... "
     if stop_service():
         binaryninja.show_message_box(
-            "Binja-RPyC",
+            SERVICE_NAME,
             "Service successfully stopped",
             binaryninja.MessageBoxButtonSet.OKButtonSet,
             binaryninja.MessageBoxIcon.InformationIcon
         )
+    else:
+        binaryninja.show_message_box(
+            SERVICE_NAME,
+            "An error occured while stopping the service, check logs",
+            binaryninja.MessageBoxButtonSet.OKButtonSet,
+            binaryninja.MessageBoxIcon.ErrorIcon
+        )
+
     return

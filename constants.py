@@ -1,9 +1,24 @@
-DEBUG = True # change to True for a way more verbose output
+from typing import Tuple
 
 #
+# The service name
 #
+SERVICE_NAME: str = "Binja-RPyC"
+
 #
-HOST, PORT = "0.0.0.0", 18812
+# Change to True to enable debug messages
+#
+DEBUG: bool = True
+
+#
+# The IPv4 host address to listen on
+#
+HOST: str = "0.0.0.0"
+
+#
+# The TCP port to listen on
+#
+PORT: int = 18812
 
 #
 # Some runtime constants

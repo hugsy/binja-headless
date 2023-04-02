@@ -1,12 +1,14 @@
 from binaryninja import (
     log_info,
     log_debug,
+    log_warn,
     log_error,
     BackgroundTaskThread,
 )
 
 from .constants import (
     DEBUG,
+    SERVICE_NAME,
 )
 
 
@@ -25,17 +27,21 @@ def ishex(s):
     return s.lower().startswith("0x") and map(lambda c: c in "0123456789abcdef", s[2:].lower())
 
 
-def info(x):
-    log_info("[+] {:s}".format(x))
+def info(x: str) -> None:
+    log_info(f"[{SERVICE_NAME}] {x}")
 
 
-def err(x):
-    log_error("[-] {:s}".format(x))
+def warn(x: str) -> None:
+    log_warn(f"[{SERVICE_NAME}] {x}")
 
 
-def dbg(x):
+def err(x: str) -> None:
+    log_error(f"[{SERVICE_NAME}] {x}")
+
+
+def dbg(x: str) -> None:
     if DEBUG:
-        log_debug("[*] {:s}".format(x))
+        log_debug(f"[{SERVICE_NAME}] {x}")
 
 
 class RunInBackground(BackgroundTaskThread):
