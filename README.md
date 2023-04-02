@@ -16,9 +16,16 @@ This plugin requires the installation of the [`rpyc`](https://rpyc.readthedocs.i
 
 ## Installation
 
-Install the files in the Binary Ninja plugin directory, and start the service (Palette -> `Start RPyc Service`).
+Install the files in the Binary Ninja plugin directory, start Binary Ninja and check in the logs the plugin is correctly loaded.
+```
+Loaded python3 plugin 'binja-headless'
+```
 
-From a remote Python terminal, you can now access binja!
+You can now start the service (Palette -> `Binja-RPyc - Start RPyc Service`). A popup will confirm the service is running, or show the error in the logs on failure.
+
+## Usage
+
+From a remote Python terminal, you can now import the `rpyc` module and access your remote Binary Ninja.
 
 ```python
 >>> import rpyc
@@ -74,25 +81,23 @@ CreateWaitableTimerW -> 0x180001090
 [...]
 ```
 
+
 ## Minimum Version
 
 This plugin requires the following minimum version of Binary Ninja:
 
- * 1200
+ * 3164
 
 
 
 ## Required Dependencies
 
-The following dependencies are required for this plugin:
-
- * rpyc >= 5.0.0
-
+The required dependencies can be found in the `requirements.txt` file.
 
 
 ## License
 
-This plugin is released under a MIT license.
+This plugin is released under a MIT license. See the `LICENSE` file for complete details.
 
 
 ## Metadata Version

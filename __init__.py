@@ -1,7 +1,8 @@
 from binaryninja import (
     PluginCommand,
 )
-from constants import SERVICE_NAME
+
+from .constants import SERVICE_NAME
 
 
 from .server import (
