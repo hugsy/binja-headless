@@ -28,20 +28,20 @@ def ishex(s):
 
 
 def info(x: str) -> None:
-    log_info(f"[{SERVICE_NAME}] {x}")
+    log_info(x, logger=SERVICE_NAME)
 
 
 def warn(x: str) -> None:
-    log_warn(f"[{SERVICE_NAME}] {x}")
+    log_warn(x, logger=SERVICE_NAME)
 
 
 def err(x: str) -> None:
-    log_error(f"[{SERVICE_NAME}] {x}")
+    log_error(x, logger=SERVICE_NAME)
 
 
 def dbg(x: str) -> None:
     if DEBUG:
-        log_debug(f"[{SERVICE_NAME}] {x}")
+        log_debug(x, logger=SERVICE_NAME)
 
 
 class RunInBackground(BackgroundTaskThread):
