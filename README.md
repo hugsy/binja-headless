@@ -4,7 +4,7 @@ Author: **@hugsy**
 
 Headless Binary Ninja (sort of!)
 
-
+_Note_: A Snippet version can be copy/pasted from [here](https://gist.github.com/hugsy/714e0038d5d0b1deb7fad1907928252f)
 
 ## Description
 
