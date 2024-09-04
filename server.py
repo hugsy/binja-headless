@@ -124,22 +124,25 @@ def rpyc_start(bv: Optional[binaryninja.binaryview.BinaryView] = None) -> None:
     g_ServiceThread = threading.Thread(target=start_service, args=(host, port, bv))
     g_ServiceThread.daemon = True
     g_ServiceThread.start()
-    binaryninja.show_message_box(
-        SERVICE_NAME,
-        "Service successfully started, you can use any RPyC client to connect to this instance of Binary Ninja",
-        binaryninja.MessageBoxButtonSet.OKButtonSet,
-        binaryninja.MessageBoxIcon.InformationIcon,
-    )
+    info(f"{SERVICE_NAME} successfully started in background")
+    # binaryninja.show_message_box(
+    #     SERVICE_NAME,
+    #     "Service successfully started, you can use any RPyC client to connect to this instance of Binary Ninja",
+    #     binaryninja.MessageBoxButtonSet.OKButtonSet,
+    #     binaryninja.MessageBoxIcon.InformationIcon,
+    # )
     return
 
 
 def shutdown_service() -> bool:
-    if not g_Server:
-        warn("Service not started")
+    if g_Server is None:
+        err("Server is not running (Service not started?)")
         return False
+
     try:
         dbg("Shutting down service")
         g_Server.close()
+        info("Service successfully shutdown")
     except Exception as e:
         err(f"Exception: {str(e)}")
         return False
@@ -149,7 +152,8 @@ def shutdown_service() -> bool:
 def stop_service() -> bool:
     """Stopping the service"""
     global g_ServiceThread
-    if not g_ServiceThread:
+    if g_ServiceThread is None:
+        err("Thread is None (Service not started?)")
         return False
 
     dbg("Stopping service thread")
@@ -157,19 +161,22 @@ def stop_service() -> bool:
         g_ServiceThread.join()
         g_ServiceThread = None
         info("Service thread stopped")
+    else:
+        err("Error while shutting down service")
+        return False
     return True
 
 
 def rpyc_stop(bv: binaryninja.BinaryView):
     "Stopping background service..."
-    if stop_service():
-        binaryninja.show_message_box(
-            SERVICE_NAME,
-            "Service successfully stopped",
-            binaryninja.MessageBoxButtonSet.OKButtonSet,
-            binaryninja.MessageBoxIcon.InformationIcon,
-        )
-    else:
+    if not stop_service():
+        # binaryninja.show_message_box(
+        #     SERVICE_NAME,
+        #     "Service successfully stopped",
+        #     binaryninja.MessageBoxButtonSet.OKButtonSet,
+        #     binaryninja.MessageBoxIcon.InformationIcon,
+        # )
+        # else:
         binaryninja.show_message_box(
             SERVICE_NAME,
             "An error occured while stopping the service, check logs",
