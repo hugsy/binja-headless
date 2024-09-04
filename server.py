@@ -38,7 +38,7 @@ def register_settings() -> None:
     all_settings: dict[str, str] = {
         SETTING_AUTOSTART: f"""{{ "title" : "Auto Start", "description" : "Automatically start {SERVICE_NAME} when Binary Ninja opens", "type" : "boolean", "default" : false, "ignore" : ["SettingsProjectScope", "SettingsResourceScope"]}}""",
         SETTING_RPYC_HOST: f"""{{ "title" : "TCP Listen Host", "description" : "Interface {SERVICE_NAME} should listen", "type" : "string", "default" : "{DEFAULT_HOST_IP}", "ignore" : ["SettingsProjectScope", "SettingsResourceScope"]}}""",
-        SETTING_RPYC_PORT: f"""{{ "title" : "TCP Listen Port", "description" : "TCP port {SERVICE_NAME} should listen", "type" : "int", "default" : {DEFAULT_HOST_PORT}, "ignore" : ["SettingsProjectScope", "SettingsResourceScope"]}}""",
+        SETTING_RPYC_PORT: f"""{{ "title" : "TCP Listen Port", "description" : "TCP port {SERVICE_NAME} should listen", "type" : "number", "minValue": 1, "maxValue": 65535,  "default" : {DEFAULT_HOST_PORT}, "ignore" : ["SettingsProjectScope", "SettingsResourceScope"]}}""",
     }
 
     settings = binaryninja.Settings()
