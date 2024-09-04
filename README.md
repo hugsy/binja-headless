@@ -35,6 +35,8 @@ Loaded python3 plugin 'binja-headless'
 Settings can be configured to specify a different host and port (default 0.0.0.0:18812) to listen to by RPyC.
 You can also enable the plugin autostart, allowing it to launch immediately in background when Binary Ninja starts.
 
+![image](https://github.com/user-attachments/assets/bb3e30d7-cded-4bb9-b897-a07dfdff402f)
+
 
 ## Start / Stop the service manually
 
