@@ -119,7 +119,7 @@ def rpyc_start(bv: Optional[binaryninja.binaryview.BinaryView] = None) -> None:
     dbg("Starting background service...")
     settings = binaryninja.Settings()
     host: str = settings.get_string(f"{SERVICE_NAME}.{SETTING_RPYC_HOST}")
-    port: int = settings.get_int(f"{SERVICE_NAME}.{SETTING_RPYC_PORT}")
+    port: int = settings.get_integer(f"{SERVICE_NAME}.{SETTING_RPYC_PORT}")
 
     g_ServiceThread = threading.Thread(target=start_service, args=(host, port, bv))
     g_ServiceThread.daemon = True
