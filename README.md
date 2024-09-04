@@ -16,10 +16,41 @@ This plugin requires the installation of the [`rpyc`](https://rpyc.readthedocs.i
 
 ## Installation
 
-Install the files in the Binary Ninja plugin directory, start Binary Ninja and check in the logs the plugin is correctly loaded.
+Install the files in the Binary Ninja plugin directory:
+
+```bash
+# linux/osx
+git clone --depth 1 https://github.com/hugsy/binja-headless "~/.config/Binary Ninja/plugins/binja-headless"
+# windows
+git clone --depth 1 https://github.com/hugsy/binja-headless "$env:AppData/Binary Ninja/plugins/binja-headless"
 ```
+
+Then start Binary Ninja and check in the logs the plugin is correctly loaded.
+```text
 Loaded python3 plugin 'binja-headless'
 ```
+
+## Settings
+
+Settings can be configured to specify a different host and port (default 0.0.0.0:18812) to listen to by RPyC.
+You can also enable the plugin autostart, allowing it to launch immediately in background when Binary Ninja starts.
+
+![image](https://github.com/user-attachments/assets/bb3e30d7-cded-4bb9-b897-a07dfdff402f)
+
+## Requirements
+
+Make sure `rpyc` is installed in Binary Ninja: Palette -> `Install python3 module` and enter `rpyc` in the dialog box that appears.
+
+After a few seconds, the following message should appear in the log
+
+```text
+[Default] Running pip ['C:\\Users\\User\\AppData\\Local\\Vector35\\BinaryNinja\\plugins\\python\\python.exe', '-m', 'pip', '--isolated', '--disable-pip-version-check', 'install', '--upgrade', '--upgrade-strategy', 'only-if-needed', '--target', 'C:\\Users\\User\\AppData\\Roaming\\Binary Ninja\\python310\\site-packages', 'rpyc>=6.0.0']
+[Default] Successfully installed dependencies.
+```
+
+You can now use Binja-RPyC !
+
+## Start / Stop the service manually
 
 You can now start the service (Palette -> `Binja-RPyc - Start RPyc Service`). A popup will confirm the service is running, or show the error in the logs on failure.
 
