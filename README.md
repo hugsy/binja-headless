@@ -37,6 +37,18 @@ You can also enable the plugin autostart, allowing it to launch immediately in b
 
 ![image](https://github.com/user-attachments/assets/bb3e30d7-cded-4bb9-b897-a07dfdff402f)
 
+## Requirements
+
+Make sure `rpyc` is installed in Binary Ninja: Palette -> `Install python3 module` and enter `rpyc` in the dialog box that appears.
+
+After a few seconds, the following message should appear in the log
+
+```text
+[Default] Running pip ['C:\\Users\\User\\AppData\\Local\\Vector35\\BinaryNinja\\plugins\\python\\python.exe', '-m', 'pip', '--isolated', '--disable-pip-version-check', 'install', '--upgrade', '--upgrade-strategy', 'only-if-needed', '--target', 'C:\\Users\\User\\AppData\\Roaming\\Binary Ninja\\python310\\site-packages', 'rpyc>=6.0.0']
+[Default] Successfully installed dependencies.
+```
+
+You can now use Binja-RPyC !
 
 ## Start / Stop the service manually
 
