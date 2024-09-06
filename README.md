@@ -32,14 +32,14 @@ Loaded python3 plugin 'binja-headless'
 
 ## Settings
 
-Settings can be configured to specify a different host and port (default 0.0.0.0:18812) to listen to by RPyC.
+Settings can be configured to specify a different host and port (default `0.0.0.0:18812`) to listen to by RPyC.
 You can also enable the plugin autostart, allowing it to launch immediately in background when Binary Ninja starts.
 
-![image](https://github.com/user-attachments/assets/bb3e30d7-cded-4bb9-b897-a07dfdff402f)
+![Image](https://github.com/user-attachments/assets/bb3e30d7-cded-4bb9-b897-a07dfdff402f)
 
 ## Requirements
 
-Make sure `rpyc` is installed in Binary Ninja: Palette -> `Install python3 module` and enter `rpyc` in the dialog box that appears.
+Make sure `rpyc` is installed in Binary Ninja: Palette -> `Install python3 module` and enter `rpyc` with the version as mentioned in the `requirements.txt`  file, in the dialog box that appeared.
 
 After a few seconds, the following message should appear in the log
 
@@ -61,6 +61,12 @@ From a remote Python terminal, you can now import the `rpyc` module and access y
 ```python
 >>> import rpyc
 >>> c = rpyc.connect("192.168.57.2", 18812)
+>>> bn = c.root.binaryninja
+```
+
+If the service was started manually with the GUI, a binaryview is automatically exposed (as `bv`) in the `root` namespace.
+
+```python
 >>> c.root.bv
 <BinaryView: '//DESKTOP-SD4TH5/Temp/ls', len 0x248e8>
 
@@ -75,18 +81,48 @@ From a remote Python terminal, you can now import the `rpyc` module and access y
 ```
 
 And then you can create some aliases to make as if you were using it locally:
-```python
->>> bv = c.root.bv ;  bn = c.root.binaryninja
 
-# and then go crazy
+```python
+>>> bv = c.root.bv
+```
+
+If the service was started automatically, no binary view is attached, but it can be opened using normal binja API calls:
+
+```python
+# Load a binary
+>>> bv = bn.load("/path/to/my/bin")
+# Load a BNDB
+>>> bv = bn.load("/path/to/file.bndb")
+
+>>> assert isinstance(bv, bn.binaryview.BinaryView)
+```
+
+> [!NOTE]
+> Before 3.5.4378 you must use `binaryninja.open_view()` to open BNDB files
+
+> [!WARNING]
+> By opening a BNDB file analyzed with a prior version of binja will display an error popup, and throw an `Exception`
+> See the [binary ninja documentation](https://api.binary.ninja/index.html#binaryninja.load) for full details
+
+And then go crazy!
+
+```python
 >>> bn.core_version()
-'3.4.4189-dev Personal'
+'4.2.5975-dev Personal'
 
 >>> bv.file
 <FileMetadata: Y:/IDBs/windows/kernel32/10.0.18362.329/kernel32.bndb>
 
 >>> bv.arch
 <arch: x86_64>
+
+>>> assert bn.binaryview.BinaryView.new(pathlib.Path("c:/temp/chall").read_bytes()).read(0, 4) == b'\x7fELF'
+
+>>> bv.endianness.name
+'LittleEndian'
+
+>>> hex(bv.entry_function.start)
+'0x1c0272010'
 
 >>> bv.file.original_filename
 'Y:/IDBs/windows/kernel32/10.0.18362.329/kernel32.dll'
