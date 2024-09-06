@@ -1,6 +1,7 @@
 """ """
 
 import threading
+import importlib
 import rpyc
 import rpyc.utils.helpers
 import rpyc.utils.server
@@ -73,6 +74,9 @@ class BinjaRpycService(rpyc.Service):
 
     def exposed_eval(self, cmd):
         return eval(cmd)
+    
+    def exposed_import_module(self, mod):
+        return importlib.import_module(mod)
 
 
 def is_service_started():
