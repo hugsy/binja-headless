@@ -78,6 +78,9 @@ class BinjaRpycService(rpyc.Service):
     def exposed_import_module(self, mod):
         return importlib.import_module(mod)
 
+    def exposed_reload_module(self, mod):
+        return importlib.reload(mod)
+
 
 def is_service_started():
     global g_ServiceThread
