@@ -18,13 +18,19 @@ This plugin requires the installation of the [`rpyc`](https://rpyc.readthedocs.i
 
 Install the files in the Binary Ninja plugin directory:
 
-### linux/osx
+### Linux
 
 ```bash
-git clone --depth 1 https://github.com/hugsy/binja-headless "~/.config/Binary Ninja/plugins/binja-headless"
+git clone --depth 1 https://github.com/hugsy/binja-headless "$HOME/.binaryninja/plugins/binja-headless"
 ```
 
-### windows
+### macOS
+
+```bash
+git clone --depth 1 https://github.com/hugsy/binja-headless "$HOME/Library/Application Support/Binary Ninja/plugins/binja-headless"
+```
+
+### Windows
 
 ```bash
 git clone --depth 1 https://github.com/hugsy/binja-headless "$env:AppData/Binary Ninja/plugins/binja-headless"
